@@ -10,3 +10,12 @@ declare global {
 }
 
 export {};
+
+const x = {
+	id: 40,
+	name: 'Iron arrowheads',
+	memberItem: false,
+	category: 'Fletching materials'
+};
+
+const n = [40, 'Iron arrowheads', false];

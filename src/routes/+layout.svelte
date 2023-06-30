@@ -1,8 +1,39 @@
 <script lang="ts">
-  import { dev } from '$app/environment';
-  import { inject } from '@vercel/analytics';
-  
-  inject({ mode: dev ? 'development' : 'production' });
+	import './global.scss';
+	import { dev } from '$app/environment';
+	import { inject } from '@vercel/analytics';
+
+	inject({ mode: dev ? 'development' : 'production' });
 </script>
 
-<slot></slot>
+<nav class="grid">
+	<div>something</div>
+	<div>search</div>
+	<div>something else</div>
+</nav>
+
+<div class="content">
+	<slot />
+</div>
+
+<style>
+	.grid {
+		display: grid;
+		grid-template-columns: 1fr 3fr 1fr;
+		justify-items: center;
+		align-items: center;
+	}
+
+	nav {
+		background: hsl(0, 0%, 16%);
+		color: #fff;
+		position: fixed;
+		top: 0;
+		width: 100vw;
+		z-index: 420;
+		height: 3.5rem;
+	}
+	.content {
+		margin-top: 3.5rem;
+	}
+</style>
