@@ -1,10 +1,11 @@
 <script lang="ts">
   import { draw } from 'svelte/transition'
-  import { onMount, tick } from 'svelte'
+  import { onMount } from 'svelte'
 
   export let barData: { currentPrice: number }[] = []
 
   $: highestPrice = Math.max(...barData.map(({ currentPrice: height }) => height))
+  $: lowestPrice = Math.min(...barData.map(({ currentPrice: height }) => height))
   $: bars = barData.map(({ currentPrice }) => ({
     currentPrice: (currentPrice / highestPrice) * 95,
   }))
@@ -12,36 +13,34 @@
   $: numberOfBars = barData.length
   $: barWidth = 100 / numberOfBars
 
-  $: toggle = false
-  onMount(() => (toggle = !toggle))
-  const toggleOnOff = () => {
-    toggle = !toggle
-    tick()
-    toggle = !toggle
+  $: keyGen = 0
+  $: keyGen++, barData
+
+  const handleMouseEnter = (e: MouseEvent) => {
+    const target = e.target as SVGPathElement
+    target.style.stroke = 'rgb(255, 0, 0)'
   }
-  $: {
-    console.log(123)
-    barData
-    bars
-    numberOfBars
-    barWidth
-    toggleOnOff()
+  const handleMouseLeave = (e: MouseEvent) => {
+    const target = e.target as SVGPathElement
+    target.style.stroke = 'rgb(27, 90, 172)'
   }
 </script>
 
-{#each bars as { currentPrice: height }, i}
-  {#if toggle}
-    <path
-      d={`M ${barWidth * i} 0 ${barWidth * i} ${height}`}
-      stroke="green"
-      stroke-width={barWidth - 0.2}
-      transition:draw={{ duration: 1000 }}
-    />
-  {/if}
+{#each bars as { currentPrice: height }, i (`${keyGen}${i}`)}
+  {@const width = barWidth * i + barWidth / 2}
+  <path
+    d={`M ${width} 0 ${width} ${height}`}
+    stroke-width={barWidth - 0.2}
+    transition:draw={{ duration: 750 }}
+    on:mouseenter={handleMouseEnter}
+    on:mouseleave={handleMouseLeave}
+    role="complementary"
+  />
 {/each}
 
 <style lang="scss">
-  rect {
-    fill: rgb(253, 235, 235);
+  path {
+    stroke: rgb(27, 90, 172);
+    stroke-dasharray: 100%;
   }
 </style>

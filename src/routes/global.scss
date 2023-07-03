@@ -3,3 +3,21 @@ body {
   background-color: hsl(0, 0%, 10%);
   color: aliceblue;
 }
+
+:root {
+  --barsDownValue: 100%;
+}
+
+head {
+  // barr movement css
+  @keyframes barsDown {
+    to {
+      stroke-dashoffset: var(--bars-down-value); // then going down this needs to be set to where it needs to go
+    }
+  }
+  @keyframes barsUp {
+    to {
+      stroke-dashoffset: 0%;
+    }
+  }
+}
