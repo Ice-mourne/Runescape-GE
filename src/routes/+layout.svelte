@@ -33,7 +33,7 @@
     color: #fff;
     position: fixed;
     top: 0;
-    width: 100vw;
+    width: 100%;
     z-index: 420;
     height: 3.5rem;
   }
